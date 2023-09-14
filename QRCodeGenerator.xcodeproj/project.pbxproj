@@ -105,7 +105,7 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		445973E62AAA20DA00D903D0 /* Coders */ = {
+		445973E62AAA20DA00D903D0 /* Encoders */ = {
 			isa = PBXGroup;
 			children = (
 				44073BF92AAA7CF1004C8A43 /* EncoderError.swift */,
@@ -113,7 +113,7 @@
 				44073BF52AAA54E3004C8A43 /* NumsQREncoder.swift */,
 				44073BF72AAA5600004C8A43 /* LettersAndNumsQREncoder.swift */,
 			);
-			path = Coders;
+			path = Encoders;
 			sourceTree = "<group>";
 		};
 		44C075882AAF62B8002972FF /* QR */ = {
@@ -122,7 +122,7 @@
 				44C6E2782AAB29FA00D2CDA2 /* QRConstants.swift */,
 				44C075862AAF3CCA002972FF /* TypeAliases.swift */,
 				44D373AE2AAD0C140090927B /* QRImageGenerator */,
-				445973E62AAA20DA00D903D0 /* Coders */,
+				445973E62AAA20DA00D903D0 /* Encoders */,
 			);
 			path = QR;
 			sourceTree = "<group>";
