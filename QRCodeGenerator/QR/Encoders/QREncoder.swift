@@ -142,7 +142,7 @@ private extension QREncoder {
         let bias = (numOfBlocks-numOfExtendedBlocks) * numOfElemsInNormalBlock
         for i in 0..<numOfExtendedBlocks {
             let startIndex = bias + i*numOfElemsInExtendedBlock
-            let endIndex = (i+1) * numOfElemsInExtendedBlock
+            let endIndex = startIndex + numOfElemsInExtendedBlock
 
             blocks.append(data[startIndex..<endIndex])
         }
@@ -157,8 +157,8 @@ private extension QREncoder {
     /// - Returns: Block with correction bytes.
     func createCorrectionBlock(for qrBlock: LightQRBlock, numOfCorrectionBytes: Int) -> QRBlock {
         var newBlock = QRBlock(repeating: 0, count: max(qrBlock.count, numOfCorrectionBytes))
-        for ind in qrBlock.indices {
-            newBlock[ind] = qrBlock[ind]
+        for (ind, val) in qrBlock.enumerated() {
+            newBlock[ind] = val
         }
 
         let polynomial = QRConstants.polynomials[numOfCorrectionBytes]!
