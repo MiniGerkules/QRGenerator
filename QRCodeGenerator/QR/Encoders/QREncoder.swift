@@ -10,7 +10,7 @@ protocol QREncoder {
     static var dataDesc: String { get }
     static var qrEncodingID: String { get }
 
-    func validateData(_ data: String) throws
+    func validateData(_ data: String, correctionLevel: QRConstants.CorrectionLevel) throws
     func generateQRBits(for data: String) -> String
 
     func getLengthOfSizeField(for qrVersion: QRVersion) -> Int
@@ -25,8 +25,7 @@ extension QREncoder {
     /// - Returns: Generated for `data` QR code bytes.
     func generateQRData(_ data: String,
                         with correctionLevel: QRConstants.CorrectionLevel) throws -> (QRData, QRVersion) {
-        try validateSizeOf(qrData: data, correctionLevel: correctionLevel)
-        try validateData(data)
+        try validateData(data, correctionLevel: correctionLevel)
 
         // Data is valid
         let capacities = QRConstants.maxDataSize[correctionLevel]!
@@ -53,20 +52,6 @@ extension QREncoder {
 
 //MARK: - Private methods to help generate QR data
 private extension QREncoder {
-    /// The method validates size of qr code data (not empty and not too big).
-    /// - Parameters:
-    ///   - qrData: Data to code in QR.
-    ///   - correctionLevel: Level of errors correction.
-    func validateSizeOf(qrData: String, correctionLevel: QRConstants.CorrectionLevel) throws {
-        if qrData.isEmpty {
-            throw EncoderError.dataIsEmpty
-        }
-
-        if qrData.count >= QRConstants.maxDataSize[correctionLevel]!.last! {
-            throw EncoderError.tooMuchData
-        }
-    }
-
     /// The method finds the version of QR code.
     /// - Parameters:
     ///   - qrCodeCapacities: Capacities of QR code versions in ascending order.
