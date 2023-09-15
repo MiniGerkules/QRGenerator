@@ -86,7 +86,7 @@ private extension QREncoder {
     func addServiceFields(to mainQRData: inout String, sourceDataLen: Int,
                           correctionLevel: QRConstants.CorrectionLevel,
                           version: inout QRVersion) throws {
-        let encodedSize = sourceDataLen.toBinString(numOfBinDigits: getLengthOfSizeField(for: version))!
+        let encodedSize = sourceDataLen.toBinString().suffix(getLengthOfSizeField(for: version))
         mainQRData.insert(contentsOf: Self.qrEncodingID + encodedSize, at: mainQRData.startIndex)
 
         let maxSize = QRConstants.getMaxDataSize(for: correctionLevel, version: version)
