@@ -27,11 +27,11 @@ extension QREncoder {
                         with correctionLevel: QRConstants.CorrectionLevel) throws -> (QRData, QRVersion) {
         try validateData(data, correctionLevel: correctionLevel)
 
-        // Data is valid
-        let capacities = QRConstants.maxDataSize[correctionLevel]!
-        var version = getVersion(qrCodeCapacities: capacities, dataSize: data.count)!
-
+        // Data must be valid
         var qrBits = generateQRBits(for: data)
+        let capacities = QRConstants.maxDataSize[correctionLevel]!
+        var version = getVersion(qrCodeCapacities: capacities, dataSize: qrBits.count)!
+
         try addServiceFields(to: &qrBits, sourceDataLen: data.count,
                              correctionLevel: correctionLevel, version: &version)
         qrBits.align(to: 8, with: "0") // 8 = num bits in a byte
