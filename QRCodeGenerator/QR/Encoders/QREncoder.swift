@@ -36,9 +36,9 @@ extension QREncoder {
                              correctionLevel: correctionLevel, version: &version)
         qrBits.align(to: 8, with: "0") // 8 = num bits in a byte
 
-        var qrBytes = qrBits.split(to: 8)!.map{ UInt8($0)! }
-        let sizeMustBe = QRConstants.getMaxDataSize(for: correctionLevel, version: version)
-        fillDataToSize(&qrBytes, sizeMustBe: sizeMustBe)
+        var qrBytes = qrBits.split(to: 8)!.map{ UInt8($0, radix: 2)! }
+        let sizeInBitsMustBe = QRConstants.getMaxDataSize(for: correctionLevel, version: version)
+        fillDataToSize(&qrBytes, sizeInBitsMustBe: sizeInBitsMustBe)
 
         let qrBlocks = splitQRBytesToBlocks(qrBytes, correctionLevel: correctionLevel, version: version)
         let numOfCorrBytes = QRConstants.getNumOfCorrectionBytes(for: correctionLevel, version: version)
@@ -104,11 +104,12 @@ private extension QREncoder {
     /// The method append filling bytes to `qrData` to get `sizeMustBe` size.
     /// - Parameters:
     ///   - qrData: The array to fill.
-    ///   - sizeMustBe: The size of resulting array.
-    func fillDataToSize(_ qrData: inout QRData, sizeMustBe: Int) {
+    ///   - sizeInBitsMustBe: The size of resulting array in bits.
+    func fillDataToSize(_ qrData: inout QRData, sizeInBitsMustBe: Int) {
         let fillers: QRData = [0b11101100, 0b00010001]
 
-        for i in 0..<((sizeMustBe - qrData.count)/8) {
+
+        for i in 0..<(sizeInBitsMustBe/8 - qrData.count) {
             qrData.append(fillers[i % 2])
         }
     }
