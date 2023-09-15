@@ -32,7 +32,7 @@ extension String {
                 chunks.append(self[startIndex..<ind])
 
                 startIndex = ind
-                curNum = numOfElem
+                curNum = numOfElem - 1
             }
         }
 
