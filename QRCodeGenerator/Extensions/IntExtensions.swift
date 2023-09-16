@@ -6,13 +6,16 @@
 //
 
 extension BinaryInteger {
+    /// The method converts self to its binary representation.
+    /// - Returns: Binary representation of number.
     func toBinString() -> String {
         let numBits = MemoryLayout.size(ofValue: self) * 8
-        var binStr = String(self, radix: 2)
+        var binStr = String(); binStr.reserveCapacity(numBits)
 
-        let diff = numBits - binStr.count
-        binStr.insert(contentsOf: String(repeating: "0", count: diff),
-                      at: binStr.startIndex)
+        for i in stride(from: numBits - 1, through: 0, by: -1) {
+            let num = (self & (1 << i)) >> i
+            binStr.append(String(num * num)) // Multipty to remove sign
+        }
 
         return binStr
     }
