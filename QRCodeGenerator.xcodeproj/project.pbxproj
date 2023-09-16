@@ -17,11 +17,18 @@
 		445973D62AAA17B200D903D0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445973D52AAA17B200D903D0 /* MainViewController.swift */; };
 		445973DB2AAA17B300D903D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 445973DA2AAA17B300D903D0 /* Assets.xcassets */; };
 		445973DE2AAA17B300D903D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 445973DC2AAA17B300D903D0 /* LaunchScreen.storyboard */; };
-		44A235CA2AB4F3FF0076F602 /* QRCodeGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A235C92AB4F3FF0076F602 /* QRCodeGeneratorTests.swift */; };
+		449EEBE82AB6170200CFB540 /* IntExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449EEBE72AB6170200CFB540 /* IntExtensionsTests.swift */; };
+		449EEBEA2AB6175100CFB540 /* ArrayExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449EEBE92AB6175100CFB540 /* ArrayExtensionsTests.swift */; };
+		449EEBEE2AB6199B00CFB540 /* QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449EEBED2AB6199B00CFB540 /* QRCode.swift */; };
+		449EEBF12AB61B8D00CFB540 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449EEBF02AB61B8D00CFB540 /* QRCodeGenerator.swift */; };
+		449EEBF32AB6371000CFB540 /* QRGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449EEBF22AB6371000CFB540 /* QRGeneratorTests.swift */; };
+		449EEBF52AB6373800CFB540 /* NumsQREncoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449EEBF42AB6373800CFB540 /* NumsQREncoderTests.swift */; };
+		449EEBF72AB6374500CFB540 /* LettersQREncoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449EEBF62AB6374500CFB540 /* LettersQREncoderTests.swift */; };
+		44A235CA2AB4F3FF0076F602 /* StringExensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A235C92AB4F3FF0076F602 /* StringExensionsTests.swift */; };
 		44C075852AAF2A10002972FF /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C075842AAF2A10002972FF /* StringExtensions.swift */; };
 		44C075872AAF3CCA002972FF /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C075862AAF3CCA002972FF /* TypeAliases.swift */; };
 		44C0758D2AAF731B002972FF /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C0758C2AAF731B002972FF /* ArrayExtension.swift */; };
-		44C075902AAF8A27002972FF /* IntExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C0758F2AAF8A27002972FF /* IntExtensions.swift */; };
+		44C075902AAF8A27002972FF /* BinaryIntegerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C0758F2AAF8A27002972FF /* BinaryIntegerExtensions.swift */; };
 		44C6E2792AAB29FA00D2CDA2 /* QRConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6E2782AAB29FA00D2CDA2 /* QRConstants.swift */; };
 		44C6E27B2AAB426E00D2CDA2 /* NotRotatingNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6E27A2AAB426E00D2CDA2 /* NotRotatingNavigationController.swift */; };
 		44C6E27D2AAB4B0400D2CDA2 /* QRPresentingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C6E27C2AAB4B0400D2CDA2 /* QRPresentingViewController.swift */; };
@@ -52,12 +59,19 @@
 		445973DA2AAA17B300D903D0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		445973DD2AAA17B300D903D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		445973DF2AAA17B300D903D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		449EEBE72AB6170200CFB540 /* IntExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtensionsTests.swift; sourceTree = "<group>"; };
+		449EEBE92AB6175100CFB540 /* ArrayExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtensionsTests.swift; sourceTree = "<group>"; };
+		449EEBED2AB6199B00CFB540 /* QRCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCode.swift; sourceTree = "<group>"; };
+		449EEBF02AB61B8D00CFB540 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
+		449EEBF22AB6371000CFB540 /* QRGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRGeneratorTests.swift; sourceTree = "<group>"; };
+		449EEBF42AB6373800CFB540 /* NumsQREncoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumsQREncoderTests.swift; sourceTree = "<group>"; };
+		449EEBF62AB6374500CFB540 /* LettersQREncoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LettersQREncoderTests.swift; sourceTree = "<group>"; };
 		44A235C72AB4F3FF0076F602 /* QRCodeGeneratorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QRCodeGeneratorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		44A235C92AB4F3FF0076F602 /* QRCodeGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGeneratorTests.swift; sourceTree = "<group>"; };
+		44A235C92AB4F3FF0076F602 /* StringExensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExensionsTests.swift; sourceTree = "<group>"; };
 		44C075842AAF2A10002972FF /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		44C075862AAF3CCA002972FF /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
 		44C0758C2AAF731B002972FF /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
-		44C0758F2AAF8A27002972FF /* IntExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtensions.swift; sourceTree = "<group>"; };
+		44C0758F2AAF8A27002972FF /* BinaryIntegerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryIntegerExtensions.swift; sourceTree = "<group>"; };
 		44C6E2782AAB29FA00D2CDA2 /* QRConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRConstants.swift; sourceTree = "<group>"; };
 		44C6E27A2AAB426E00D2CDA2 /* NotRotatingNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotRotatingNavigationController.swift; sourceTree = "<group>"; };
 		44C6E27C2AAB4B0400D2CDA2 /* QRPresentingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRPresentingViewController.swift; sourceTree = "<group>"; };
@@ -138,10 +152,39 @@
 			path = Encoders;
 			sourceTree = "<group>";
 		};
+		449EEBE62AB616D500CFB540 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				44A235C92AB4F3FF0076F602 /* StringExensionsTests.swift */,
+				449EEBE72AB6170200CFB540 /* IntExtensionsTests.swift */,
+				449EEBE92AB6175100CFB540 /* ArrayExtensionsTests.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		449EEBEB2AB6178700CFB540 /* QR */ = {
+			isa = PBXGroup;
+			children = (
+				449EEBF22AB6371000CFB540 /* QRGeneratorTests.swift */,
+				449EEBEC2AB6179800CFB540 /* Encoders */,
+			);
+			path = QR;
+			sourceTree = "<group>";
+		};
+		449EEBEC2AB6179800CFB540 /* Encoders */ = {
+			isa = PBXGroup;
+			children = (
+				449EEBF42AB6373800CFB540 /* NumsQREncoderTests.swift */,
+				449EEBF62AB6374500CFB540 /* LettersQREncoderTests.swift */,
+			);
+			path = Encoders;
+			sourceTree = "<group>";
+		};
 		44A235C82AB4F3FF0076F602 /* QRCodeGeneratorTests */ = {
 			isa = PBXGroup;
 			children = (
-				44A235C92AB4F3FF0076F602 /* QRCodeGeneratorTests.swift */,
+				449EEBEB2AB6178700CFB540 /* QR */,
+				449EEBE62AB616D500CFB540 /* Extensions */,
 			);
 			path = QRCodeGeneratorTests;
 			sourceTree = "<group>";
@@ -151,6 +194,8 @@
 			children = (
 				44C6E2782AAB29FA00D2CDA2 /* QRConstants.swift */,
 				44C075862AAF3CCA002972FF /* TypeAliases.swift */,
+				449EEBED2AB6199B00CFB540 /* QRCode.swift */,
+				449EEBF02AB61B8D00CFB540 /* QRCodeGenerator.swift */,
 				44D373AE2AAD0C140090927B /* QRImageGenerator */,
 				445973E62AAA20DA00D903D0 /* Encoders */,
 			);
@@ -161,7 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				44C075842AAF2A10002972FF /* StringExtensions.swift */,
-				44C0758F2AAF8A27002972FF /* IntExtensions.swift */,
+				44C0758F2AAF8A27002972FF /* BinaryIntegerExtensions.swift */,
 				44C0758C2AAF731B002972FF /* ArrayExtension.swift */,
 			);
 			path = Extensions;
@@ -280,8 +325,10 @@
 				44C0758D2AAF731B002972FF /* ArrayExtension.swift in Sources */,
 				44073BF42AAA54A6004C8A43 /* QREncoder.swift in Sources */,
 				44D373B02AAD0C710090927B /* QRImageGenerator.swift in Sources */,
+				449EEBF12AB61B8D00CFB540 /* QRCodeGenerator.swift in Sources */,
 				44C075872AAF3CCA002972FF /* TypeAliases.swift in Sources */,
-				44C075902AAF8A27002972FF /* IntExtensions.swift in Sources */,
+				449EEBEE2AB6199B00CFB540 /* QRCode.swift in Sources */,
+				44C075902AAF8A27002972FF /* BinaryIntegerExtensions.swift in Sources */,
 				44073BF82AAA5600004C8A43 /* LettersAndNumsQREncoder.swift in Sources */,
 				44C6E2792AAB29FA00D2CDA2 /* QRConstants.swift in Sources */,
 				44073BFC2AAA8711004C8A43 /* QRGeneratingViewController.swift in Sources */,
@@ -300,7 +347,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44A235CA2AB4F3FF0076F602 /* QRCodeGeneratorTests.swift in Sources */,
+				44A235CA2AB4F3FF0076F602 /* StringExensionsTests.swift in Sources */,
+				449EEBEA2AB6175100CFB540 /* ArrayExtensionsTests.swift in Sources */,
+				449EEBF32AB6371000CFB540 /* QRGeneratorTests.swift in Sources */,
+				449EEBF52AB6373800CFB540 /* NumsQREncoderTests.swift in Sources */,
+				449EEBE82AB6170200CFB540 /* IntExtensionsTests.swift in Sources */,
+				449EEBF72AB6374500CFB540 /* LettersQREncoderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
