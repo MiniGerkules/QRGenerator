@@ -8,6 +8,5 @@
 import UIKit.UIImage
 
 protocol QRImageGenerator {
-    func generateQRImage(qrData: QRData, correctionLevel: QRConstants.CorrectionLevel,
-                         version: QRVersion) -> UIImage
+    func generateQRImage(qrCode: QRCode) -> UIImage
 }
