@@ -15,7 +15,13 @@ extension String {
         append(contentsOf: String(repeating: filler, count: repeatNum))
     }
 
-    func split(to numOfElem: Int) -> [String.SubSequence]? {
+    /// The method splits string into fragments with `numOfElem` elements in each.
+    ///
+    /// Last chunk may contain not `numOfElem`, if there aren't enough elements. In that case it will contain
+    /// `count % numOfElem` elements.
+    /// - Parameter numOfElem: The number of elements in each chunk.
+    /// - Returns: String splitted to  chunks with `numOfElem` in each (last one can contain less).
+    func split(by numOfElem: Int) -> [String.SubSequence]? {
         guard numOfElem > 0 else { return nil }
 
         let dataSize = count

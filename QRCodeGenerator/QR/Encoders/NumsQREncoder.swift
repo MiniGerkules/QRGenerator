@@ -34,7 +34,7 @@ struct NumsQREncoder : QREncoder {
 
     func generateQRBits(for data: String) -> String {
         var qrBits = String()
-        let chunks = data.split(to: 3)!.map{ Int($0)! }
+        let chunks = data.split(by: 3)!.map{ Int($0)! }
 
         for chunk in chunks.dropLast() {
             qrBits += chunk.toBinString().suffix(Self.threeDigitsBlockSize_)

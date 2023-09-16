@@ -36,7 +36,7 @@ extension QREncoder {
                              correctionLevel: correctionLevel, version: &version)
         qrBits.align(to: 8, with: "0") // 8 = num bits in a byte
 
-        var qrBytes = qrBits.split(to: 8)!.map{ UInt8($0, radix: 2)! }
+        var qrBytes = qrBits.split(by: 8)!.map{ UInt8($0, radix: 2)! }
         let sizeInBitsMustBe = QRConstants.getMaxDataSize(for: correctionLevel, version: version)
         fillDataToSize(&qrBytes, sizeInBitsMustBe: sizeInBitsMustBe)
 
