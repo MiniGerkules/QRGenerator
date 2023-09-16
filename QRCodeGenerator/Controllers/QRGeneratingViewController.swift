@@ -38,10 +38,11 @@ class QRGeneratingViewController: UIViewController {
 
         do {
             let (qrData, version) = try encoder_.generateQRData(data, with: correctionLevel_)
-            let qrImage = imageGenerator_.generateQRImage(
+            let qrCode = QRCodeGenerator.generateQRCode(
                 qrData: qrData, correctionLevel: correctionLevel_, version: version
             )
-            
+            let qrImage = imageGenerator_.generateQRImage(qrCode: qrCode)
+
             qrIsGenerated_(qrCode: qrImage)
         } catch EncoderError.tooMuchData {
             generationIsFailed_(
