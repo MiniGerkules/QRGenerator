@@ -18,6 +18,8 @@
 		445973DB2AAA17B300D903D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 445973DA2AAA17B300D903D0 /* Assets.xcassets */; };
 		445973DE2AAA17B300D903D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 445973DC2AAA17B300D903D0 /* LaunchScreen.storyboard */; };
 		449863E22AB74A030071B70E /* QRVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449863E12AB74A030071B70E /* QRVersion.swift */; };
+		449B13532AB76FCA00A9C3D0 /* BytesQREncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449B13522AB76FCA00A9C3D0 /* BytesQREncoder.swift */; };
+		449B13552AB7707900A9C3D0 /* BytesQREncoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449B13542AB7707900A9C3D0 /* BytesQREncoderTests.swift */; };
 		449EEBE82AB6170200CFB540 /* IntExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449EEBE72AB6170200CFB540 /* IntExtensionsTests.swift */; };
 		449EEBEA2AB6175100CFB540 /* ArrayExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449EEBE92AB6175100CFB540 /* ArrayExtensionsTests.swift */; };
 		449EEBEE2AB6199B00CFB540 /* QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449EEBED2AB6199B00CFB540 /* QRCode.swift */; };
@@ -61,6 +63,8 @@
 		445973DD2AAA17B300D903D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		445973DF2AAA17B300D903D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		449863E12AB74A030071B70E /* QRVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRVersion.swift; sourceTree = "<group>"; };
+		449B13522AB76FCA00A9C3D0 /* BytesQREncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BytesQREncoder.swift; sourceTree = "<group>"; };
+		449B13542AB7707900A9C3D0 /* BytesQREncoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BytesQREncoderTests.swift; sourceTree = "<group>"; };
 		449EEBE72AB6170200CFB540 /* IntExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtensionsTests.swift; sourceTree = "<group>"; };
 		449EEBE92AB6175100CFB540 /* ArrayExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtensionsTests.swift; sourceTree = "<group>"; };
 		449EEBED2AB6199B00CFB540 /* QRCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCode.swift; sourceTree = "<group>"; };
@@ -148,6 +152,7 @@
 			children = (
 				44073BF92AAA7CF1004C8A43 /* EncoderError.swift */,
 				44073BF32AAA54A6004C8A43 /* QREncoder.swift */,
+				449B13522AB76FCA00A9C3D0 /* BytesQREncoder.swift */,
 				44073BF52AAA54E3004C8A43 /* NumsQREncoder.swift */,
 				44073BF72AAA5600004C8A43 /* LettersAndNumsQREncoder.swift */,
 			);
@@ -177,6 +182,7 @@
 			children = (
 				44D44A6B2AB709930092F5B6 /* QREncoderTests.swift */,
 				449EEBF42AB6373800CFB540 /* NumsQREncoderTests.swift */,
+				449B13542AB7707900A9C3D0 /* BytesQREncoderTests.swift */,
 				449EEBF62AB6374500CFB540 /* LettersAndNumsQREncoder.swift */,
 			);
 			path = Encoders;
@@ -340,6 +346,7 @@
 				44C6E27B2AAB426E00D2CDA2 /* NotRotatingNavigationController.swift in Sources */,
 				44073BFA2AAA7CF1004C8A43 /* EncoderError.swift in Sources */,
 				44C075852AAF2A10002972FF /* StringExtensions.swift in Sources */,
+				449B13532AB76FCA00A9C3D0 /* BytesQREncoder.swift in Sources */,
 				445973D22AAA17B200D903D0 /* AppDelegate.swift in Sources */,
 				44073BF62AAA54E3004C8A43 /* NumsQREncoder.swift in Sources */,
 				445973D42AAA17B200D903D0 /* SceneDelegate.swift in Sources */,
@@ -353,6 +360,7 @@
 			files = (
 				44A235CA2AB4F3FF0076F602 /* StringExensionsTests.swift in Sources */,
 				44D44A6C2AB709930092F5B6 /* QREncoderTests.swift in Sources */,
+				449B13552AB7707900A9C3D0 /* BytesQREncoderTests.swift in Sources */,
 				449EEBEA2AB6175100CFB540 /* ArrayExtensionsTests.swift in Sources */,
 				449EEBF52AB6373800CFB540 /* NumsQREncoderTests.swift in Sources */,
 				449EEBE82AB6170200CFB540 /* IntExtensionsTests.swift in Sources */,

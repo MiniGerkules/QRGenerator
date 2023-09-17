@@ -9,6 +9,7 @@ import UIKit
 
 class MainViewController: UIViewController {
     private let qrEncoders_: [QREncoder] = [
+        BytesQREncoder(),
         NumsQREncoder(),
         LettersAndNumsQREncoder(),
     ]
