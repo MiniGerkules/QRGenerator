@@ -168,7 +168,7 @@ private extension QRCodeGenerator {
     }
 
     static func addQRData_(qrCode: inout QRCode, qrData: QRData, positions: Positions,
-                    maskFunc: QRConstants.MaskFunction) {
+                           maskFunc: QRConstants.MaskFunction) {
         var cur = positions.startIndex
 
         for num in qrData {
