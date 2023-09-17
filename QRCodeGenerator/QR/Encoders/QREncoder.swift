@@ -10,10 +10,19 @@ protocol QREncoder {
     static var dataDesc: String { get }
     static var qrEncodingID: String { get }
 
+    func getDataSize(_ data: String) -> Int
     func validateData(_ data: String, correctionLevel: QRConstants.CorrectionLevel) throws
+
     func generateQRBits(for data: String) -> String
 
     func getLengthOfSizeField(for qrVersion: QRVersion) -> Int
+}
+
+//MARK: - getDataSize realization by default
+extension QREncoder {
+    func getDataSize(_ data: String) -> Int {
+        return data.count
+    }
 }
 
 //MARK: - Generation method
@@ -32,7 +41,7 @@ extension QREncoder {
         let capacities = QRConstants.maxDataSize[correctionLevel]!
         var version = getVersion_(qrCodeCapacities: capacities, dataSize: qrBits.count)!
 
-        try addServiceFields_(to: &qrBits, sourceDataLen: data.count,
+        try addServiceFields_(to: &qrBits, sourceDataLen: getDataSize(data),
                              correctionLevel: correctionLevel, version: &version)
         qrBits.align(to: 8, with: "0") // 8 = num bits in a byte
 
@@ -159,7 +168,7 @@ private extension QREncoder {
 
         let polynomial = QRConstants.polynomials[numOfCorrectionBytes]!
 
-        for _ in newBlock.indices {
+        for _ in 0..<qrBlock.count {
             let a = newBlock[0]
             newBlock.shiftLeft(by: 1, filler: 0)
 
