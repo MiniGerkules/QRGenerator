@@ -155,9 +155,9 @@
 		449EEBE62AB616D500CFB540 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				44A235C92AB4F3FF0076F602 /* StringExensionsTests.swift */,
-				449EEBE72AB6170200CFB540 /* IntExtensionsTests.swift */,
 				449EEBE92AB6175100CFB540 /* ArrayExtensionsTests.swift */,
+				449EEBE72AB6170200CFB540 /* IntExtensionsTests.swift */,
+				44A235C92AB4F3FF0076F602 /* StringExensionsTests.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
