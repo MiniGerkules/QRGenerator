@@ -24,7 +24,7 @@ extension Array {
             moveIndex = index(after:)
         } else { // if num < 0
             end = index(before: startIndex)
-            to = index(before: endIndex); from = index(to, offsetBy: -num)
+            to = index(before: endIndex); from = index(to, offsetBy: num)
             moveIndex = index(before:)
         }
 
@@ -42,7 +42,7 @@ extension Array {
 }
 
 extension Array where Element: Collection<UInt8> {
-    /// The method merges data of self to `qrData` parameter.
+    /// The method merges data of self to `qrData` parameter. Data in `qrData` will be saved!
     ///
     /// The process of combining numbers occurs as follows: first, the first bytes from all arrays are taken,
     /// then the second bytes, then the third, and so on, as long as there is unread data in the arrays. If there
