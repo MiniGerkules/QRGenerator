@@ -10,6 +10,10 @@ struct BytesQREncoder: QREncoder {
     static var dataDesc: String = "Any data"
     static var qrEncodingID: String = "0100"
 
+    func getDataSize(_ data: String) -> Int {
+        return data.utf8.count
+    }
+
     func validateData(_ data: String, correctionLevel: QRConstants.CorrectionLevel) throws {
         if data.isEmpty {
             throw EncoderError.dataIsEmpty
