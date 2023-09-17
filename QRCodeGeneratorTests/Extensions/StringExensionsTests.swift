@@ -27,6 +27,7 @@ final class StringExensionsTests: XCTestCase {
         testStr.align(to: 5, with: "1")
         testStr.align(to: 3, with: "2")
         testStr.align(to: 5, with: "5")
+        testStr.align(to: 0, with: "7")
 
         XCTAssertEqual("600000000022555", testStr)
     }
@@ -64,6 +65,9 @@ final class StringExensionsTests: XCTestCase {
         XCTAssertEqual(splitted, ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
 
         splitted = testStr.split(by: -5)
+        XCTAssertNil(splitted)
+
+        splitted = testStr.split(by: 0)
         XCTAssertNil(splitted)
     }
 }

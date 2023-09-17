@@ -11,6 +11,8 @@ extension String {
     ///   - num: The number to align the string.
     ///   - filler: The character to fill the string.
     mutating func align(to num: Int, with filler: Character) {
+        guard num > 0 else { return }
+
         let repeatNum = (num - count % num) % num
         append(contentsOf: String(repeating: filler, count: repeatNum))
     }
