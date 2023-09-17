@@ -6,6 +6,8 @@
 //
 
 struct QRCodeGenerator {
+    private init() { } // Remove default init. Use struct as a namespace.
+
     static func generateQRCode(qrData: QRData, correctionLevel: QRConstants.CorrectionLevel,
                                version: QRVersion) -> QRCode {
         let sideSizeInModules = QRConstants.getQRCodeSideSize(version: version)
@@ -108,14 +110,14 @@ private extension QRCodeGenerator {
     static func addCorrectionLevelMaskAndData_(qrCode: inout QRCode,
                                                qrData: QRData,
                                                correctionLevel: QRConstants.CorrectionLevel) {
-        let positions = generatePositions_(qrCode: qrCode)
-
         let maskID = QRConstants.masks.keys.randomElement()!
         let maskFunc = QRConstants.masks[maskID]!
 
         // Reserve pixels to not fill them with data
         addCorrectionLevelAndMask_(qrCode: &qrCode,
-                                   module: [QRCode.Module](repeating: .notSetted, count: 15))
+                                   module: [QRCode.Module](repeating: .withoutData, count: 15))
+
+        let positions = generatePositions_(qrCode: qrCode)
 
         addQRData_(qrCode: &qrCode, qrData: qrData, positions: positions,
                    maskFunc: maskFunc)
