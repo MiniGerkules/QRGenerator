@@ -83,7 +83,7 @@ private extension QRCodeGenerator {
     }
 
     static func addQRCodeVersion_(qrCode: inout QRCode, version: QRVersion) {
-        guard let versionID = QRConstants.qrVersionsID[version] else { return }
+        guard let versionID = QRConstants.qrVersionsID[version.value] else { return }
 
         let modules = toModules_(str: versionID)
         guard modules.count == 18 else { return }

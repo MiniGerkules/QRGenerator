@@ -70,11 +70,7 @@ private extension QREncoder {
             }
         }
 
-        if right < qrCodeCapacities.endIndex && dataSize <= qrCodeCapacities[right] {
-            return right + 1
-        } else {
-            return nil
-        }
+        return QRVersion(version: right + 1)
     }
 
     /// The method adds service firled to `mainQRData` string.
@@ -93,7 +89,7 @@ private extension QREncoder {
         let curSize = mainQRData.count
 
         if curSize > maxSize {
-            if let nextVersion = QRConstants.getNextVersion(currentVersion: version) {
+            if let nextVersion = version.next() {
                 version = nextVersion
             } else {
                 throw EncoderError.tooMuchData

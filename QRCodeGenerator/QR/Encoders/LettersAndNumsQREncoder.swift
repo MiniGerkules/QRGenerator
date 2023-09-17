@@ -40,7 +40,8 @@ struct LettersAndNumsQREncoder : QREncoder {
             throw EncoderError.dataIsEmpty
         }
 
-        let maxPossibleSize = 11*data.count/2 + Self.qrEncodingID.count + getLengthOfSizeField(for: 40)
+        let maxPossibleSize = 11*data.count/2 + Self.qrEncodingID.count +
+            getLengthOfSizeField(for: QRVersion(version: QRConstants.versions.upperBound)!)
         if maxPossibleSize >= QRConstants.maxDataSize[correctionLevel]!.last! {
             throw EncoderError.tooMuchData
         }
@@ -74,9 +75,9 @@ struct LettersAndNumsQREncoder : QREncoder {
     }
 
     func getLengthOfSizeField(for qrVersion: QRVersion) -> Int {
-        if (1...9).contains(qrVersion) {
+        if (1...9).contains(qrVersion.value) {
             return 9
-        } else if (10...26).contains(qrVersion) {
+        } else if (10...26).contains(qrVersion.value) {
             return 11
         } else {
             return 13

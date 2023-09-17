@@ -279,34 +279,29 @@ struct QRConstants {
     static let levelingPatternSideLen = 5
 
     //MARK: - Static methods
-    static func getNextVersion(currentVersion: QRVersion) -> Int? {
-        let nextVersion = currentVersion + 1
-        return versions.contains(nextVersion) ? nextVersion : nil
-    }
-
     static func getMaxDataSize(for correctionLevel: CorrectionLevel,
                                version: QRVersion) -> Int {
-        return maxDataSize[correctionLevel]![version - 1]
+        return maxDataSize[correctionLevel]![version.value - 1]
     }
 
     static func getNumOfBlocks(for correctionLevel: CorrectionLevel,
                                version: QRVersion) -> Int {
-        return numOfBlocks[correctionLevel]![version - 1]
+        return numOfBlocks[correctionLevel]![version.value - 1]
     }
 
     static func getNumOfCorrectionBytes(for correctionLevel: CorrectionLevel,
                                         version: QRVersion) -> Int {
-        return numOfCorrectionBytes[correctionLevel]![version - 1]
+        return numOfCorrectionBytes[correctionLevel]![version.value - 1]
     }
 
     static func getQRCodeSideSize(version: QRVersion) -> Int {
-        guard version != 1 else { return 21 }
+        guard version.value > 1 else { return 21 }
 
-        return locationsOfLevelingPatterns[version - 1].last! + 7
+        return locationsOfLevelingPatterns[version.value - 1].last! + 7
     }
 
     static func getCentersOfLevelingPatterns(version: QRVersion) -> [(Int, Int)] {
-        let levelingPatterns = locationsOfLevelingPatterns[version - 1]
+        let levelingPatterns = locationsOfLevelingPatterns[version.value - 1]
 
         var locations = [(Int, Int)]()
         locations.reserveCapacity(levelingPatterns.count * levelingPatterns.count)
@@ -317,7 +312,7 @@ struct QRConstants {
             }
         }
 
-        if version > 6 {
+        if version.value > 6 {
             let sourceNumOfElems = levelingPatterns.count
 
             locations.remove(at: locations.count - sourceNumOfElems) // (last, last)
