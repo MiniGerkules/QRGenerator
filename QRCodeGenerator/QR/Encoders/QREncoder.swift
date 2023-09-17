@@ -30,23 +30,23 @@ extension QREncoder {
         // Data must be valid
         var qrBits = generateQRBits(for: data)
         let capacities = QRConstants.maxDataSize[correctionLevel]!
-        var version = getVersion(qrCodeCapacities: capacities, dataSize: qrBits.count)!
+        var version = getVersion_(qrCodeCapacities: capacities, dataSize: qrBits.count)!
 
-        try addServiceFields(to: &qrBits, sourceDataLen: data.count,
+        try addServiceFields_(to: &qrBits, sourceDataLen: data.count,
                              correctionLevel: correctionLevel, version: &version)
         qrBits.align(to: 8, with: "0") // 8 = num bits in a byte
 
         var qrBytes = qrBits.split(by: 8)!.map{ UInt8($0, radix: 2)! }
         let sizeInBitsMustBe = QRConstants.getMaxDataSize(for: correctionLevel, version: version)
-        fillDataToSize(&qrBytes, sizeInBitsMustBe: sizeInBitsMustBe)
+        fillDataToSize_(&qrBytes, sizeInBitsMustBe: sizeInBitsMustBe)
 
-        let qrBlocks = splitQRBytesToBlocks(qrBytes, correctionLevel: correctionLevel, version: version)
+        let qrBlocks = splitQRBytesToBlocks_(qrBytes, correctionLevel: correctionLevel, version: version)
         let numOfCorrBytes = QRConstants.getNumOfCorrectionBytes(for: correctionLevel, version: version)
         let correctionBlocks = qrBlocks.map { qrBlock in
-            createCorrectionBlock(for: qrBlock, numOfCorrectionBytes: numOfCorrBytes)
+            createCorrectionBlock_(for: qrBlock, numOfCorrectionBytes: numOfCorrBytes)
         }
 
-        return (merge(qrBlocks: qrBlocks, correctionBlocks: correctionBlocks), version)
+        return (merge_(qrBlocks: qrBlocks, correctionBlocks: correctionBlocks), version)
     }
 }
 
@@ -57,7 +57,7 @@ private extension QREncoder {
     ///   - qrCodeCapacities: Capacities of QR code versions in ascending order.
     ///   - dataSize: The size of data to encode.
     /// - Returns: Version of QR code or nil if data is too big for encoding.
-    func getVersion(qrCodeCapacities: [Int], dataSize: Int) -> Int? {
+    func getVersion_(qrCodeCapacities: [Int], dataSize: Int) -> QRVersion? {
         var left = qrCodeCapacities.index(before: qrCodeCapacities.startIndex)
         var right = qrCodeCapacities.endIndex
 
@@ -79,9 +79,9 @@ private extension QREncoder {
     ///   - sourceDataLen: Size of data to encode.
     ///   - correctionLevel: Level of errors correction.
     ///   - version: Version of the generated qr code.
-    func addServiceFields(to mainQRData: inout String, sourceDataLen: Int,
-                          correctionLevel: QRConstants.CorrectionLevel,
-                          version: inout QRVersion) throws {
+    func addServiceFields_(to mainQRData: inout String, sourceDataLen: Int,
+                           correctionLevel: QRConstants.CorrectionLevel,
+                           version: inout QRVersion) throws {
         let encodedSize = sourceDataLen.toBinString().suffix(getLengthOfSizeField(for: version))
         mainQRData.insert(contentsOf: Self.qrEncodingID + encodedSize, at: mainQRData.startIndex)
 
@@ -101,7 +101,7 @@ private extension QREncoder {
     /// - Parameters:
     ///   - qrData: The array to fill.
     ///   - sizeInBitsMustBe: The size of resulting array in bits.
-    func fillDataToSize(_ qrData: inout QRData, sizeInBitsMustBe: Int) {
+    func fillDataToSize_(_ qrData: inout QRData, sizeInBitsMustBe: Int) {
         let fillers: QRData = [0b11101100, 0b00010001]
 
 
@@ -116,8 +116,8 @@ private extension QREncoder {
     ///   - correctionLevel: The level of correction.
     ///   - version: The version of QR code.
     /// - Returns: Block with data from `data` argument.
-    func splitQRBytesToBlocks(_ data: QRData, correctionLevel: QRConstants.CorrectionLevel,
-                             version: QRVersion) -> LightQRBlocks {
+    func splitQRBytesToBlocks_(_ data: QRData, correctionLevel: QRConstants.CorrectionLevel,
+                               version: QRVersion) -> LightQRBlocks {
         let numOfBlocks = QRConstants.getNumOfBlocks(for: correctionLevel, version: version)
         var blocks = LightQRBlocks()
         blocks.reserveCapacity(numOfBlocks)
@@ -151,7 +151,7 @@ private extension QREncoder {
     ///   - qrBlock: The block for which the correction block is being created.
     ///   - numOfCorrectionBytes: The number of correction bytes.
     /// - Returns: Block with correction bytes.
-    func createCorrectionBlock(for qrBlock: LightQRBlock, numOfCorrectionBytes: Int) -> QRBlock {
+    func createCorrectionBlock_(for qrBlock: LightQRBlock, numOfCorrectionBytes: Int) -> QRBlock {
         var newBlock = QRBlock(repeating: 0, count: max(qrBlock.count, numOfCorrectionBytes))
         for (ind, val) in qrBlock.enumerated() {
             newBlock[ind] = val
@@ -183,7 +183,7 @@ private extension QREncoder {
     ///   - qrBlocks: Blocks of main qr code data.
     ///   - correctionBlocks: Correction blocks for `qrBlocks`.
     /// - Returns: Array merged from `qrBlocks` and `correctionBlocks`
-    func merge(qrBlocks: LightQRBlocks, correctionBlocks: QRBlocks) -> QRData {
+    func merge_(qrBlocks: LightQRBlocks, correctionBlocks: QRBlocks) -> QRData {
         var qrData = QRData()
         qrData.reserveCapacity(2 * qrBlocks.reduce(0) { $0 + $1.count })
 
