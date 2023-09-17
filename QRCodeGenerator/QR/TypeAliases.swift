@@ -14,5 +14,3 @@ typealias QRBlock = QRData
 typealias QRBlocks = [QRBlock]
 
 typealias Polynomial = [Int]
-
-typealias QRVersion = Int
