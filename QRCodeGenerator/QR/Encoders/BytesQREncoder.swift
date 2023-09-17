@@ -10,20 +10,17 @@ struct BytesQREncoder: QREncoder {
     static var dataDesc: String = "Any data"
     static var qrEncodingID: String = "0100"
 
+    func dataContentValid(_ data: String) throws {
+        // Any content is valid
+    }
+    
     func getDataSize(_ data: String) -> Int {
         return data.utf8.count
     }
 
-    func validateData(_ data: String, correctionLevel: QRConstants.CorrectionLevel) throws {
-        if data.isEmpty {
-            throw EncoderError.dataIsEmpty
-        }
-
-        let maxPossibleSize = 8*data.utf8.count + Self.qrEncodingID.count +
-            getLengthOfSizeField(for: QRVersion(version: QRConstants.versions.upperBound)!)
-        if maxPossibleSize >= QRConstants.maxDataSize[correctionLevel]!.last! {
-            throw EncoderError.tooMuchData
-        }
+    func getMaxEncodedSize(of data: String) -> Int {
+        let sizeFieldLen = getLengthOfSizeField(for: QRConstants.maxQRVersion)
+        return 8*getDataSize(data) + Self.qrEncodingID.count + sizeFieldLen
     }
 
     func generateQRBits(for data: String) -> String {

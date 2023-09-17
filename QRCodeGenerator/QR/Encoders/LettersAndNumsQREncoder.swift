@@ -35,22 +35,17 @@ struct LettersAndNumsQREncoder : QREncoder {
     static let dataDesc: String = "Letters, numbers"
     static let qrEncodingID: String = "0010"
 
-    func validateData(_ data: String, correctionLevel: QRConstants.CorrectionLevel) throws {
-        if data.isEmpty {
-            throw EncoderError.dataIsEmpty
-        }
-
-        let maxPossibleSize = 11*data.count/2 + Self.qrEncodingID.count +
-            getLengthOfSizeField(for: QRVersion(version: QRConstants.versions.upperBound)!)
-        if maxPossibleSize >= QRConstants.maxDataSize[correctionLevel]!.last! {
-            throw EncoderError.tooMuchData
-        }
-
+    func dataContentValid(_ data: String) throws {
         if data.contains(/[^0-9a-zA-Z $%*+\-.\/:]/) {
             throw EncoderError.uncorrectData("Data contains not only digits, english " +
                                              "letters, spaces or that characters: '$', " +
                                              "'%', '*', '+', '-', '.', '/', ':'!")
         }
+    }
+
+    func getMaxEncodedSize(of data: String) -> Int {
+        let sizeFieldLen = getLengthOfSizeField(for: QRConstants.maxQRVersion)
+        return 11*getDataSize(data)/2 + Self.qrEncodingID.count + sizeFieldLen
     }
 
     func generateQRBits(for data: String) -> String {

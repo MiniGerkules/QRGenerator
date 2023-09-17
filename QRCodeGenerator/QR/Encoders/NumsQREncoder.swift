@@ -17,20 +17,15 @@ struct NumsQREncoder : QREncoder {
     static let dataDesc: String = "Numbers"
     static let qrEncodingID: String = "0001"
 
-    func validateData(_ data: String, correctionLevel: QRConstants.CorrectionLevel) throws {
-        if data.isEmpty {
-            throw EncoderError.dataIsEmpty
-        }
-
-        let maxPossibleSize = 10*data.count/3 + Self.qrEncodingID.count +
-            getLengthOfSizeField(for: QRVersion(version: QRConstants.versions.upperBound)!)
-        if maxPossibleSize >= QRConstants.maxDataSize[correctionLevel]!.last! {
-            throw EncoderError.tooMuchData
-        }
-
+    func dataContentValid(_ data: String) throws {
         if data.contains(/[^\d]/) {
             throw EncoderError.uncorrectData("Data contains not only digits!")
         }
+    }
+
+    func getMaxEncodedSize(of data: String) -> Int {
+        let sizeFieldLen = getLengthOfSizeField(for: QRConstants.maxQRVersion)
+        return 10*getDataSize(data)/3 + Self.qrEncodingID.count + sizeFieldLen
     }
 
     func generateQRBits(for data: String) -> String {

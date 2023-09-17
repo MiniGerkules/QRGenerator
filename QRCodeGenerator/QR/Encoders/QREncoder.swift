@@ -10,12 +10,16 @@ protocol QREncoder {
     static var dataDesc: String { get }
     static var qrEncodingID: String { get }
 
+    //MARK: Checks
+    func dataContentValid(_ data: String) throws
+
+    //MARK: Getters
     func getDataSize(_ data: String) -> Int
-    func validateData(_ data: String, correctionLevel: QRConstants.CorrectionLevel) throws
-
-    func generateQRBits(for data: String) -> String
-
+    func getMaxEncodedSize(of data: String) -> Int
     func getLengthOfSizeField(for qrVersion: QRVersion) -> Int
+
+    //MARK: Generators
+    func generateQRBits(for data: String) -> String
 }
 
 //MARK: - getDataSize realization by default
@@ -56,6 +60,22 @@ extension QREncoder {
         }
 
         return (merge_(qrBlocks: qrBlocks, correctionBlocks: correctionBlocks), version)
+    }
+}
+
+//MARK: - Validation methods
+extension QREncoder {
+    func validateData(_ data: String, correctionLevel: QRConstants.CorrectionLevel) throws {
+        if data.isEmpty {
+            throw EncoderError.dataIsEmpty
+        }
+
+        let maxPossibleSize = getMaxEncodedSize(of: data)
+        if maxPossibleSize >= QRConstants.maxDataSize[correctionLevel]!.last! {
+            throw EncoderError.tooMuchData
+        }
+
+        try dataContentValid(data)
     }
 }
 
