@@ -151,7 +151,7 @@ private extension QREncoder {
     ///   - qrBlock: The block for which the correction block is being created.
     ///   - numOfCorrectionBytes: The number of correction bytes.
     /// - Returns: Block with correction bytes.
-    func createCorrectionBlock_(for qrBlock: LightQRBlock, numOfCorrectionBytes: Int) -> QRBlock {
+    func createCorrectionBlock_(for qrBlock: LightQRBlock, numOfCorrectionBytes: Int) -> LightQRBlock {
         var newBlock = QRBlock(repeating: 0, count: max(qrBlock.count, numOfCorrectionBytes))
         for (ind, val) in qrBlock.enumerated() {
             newBlock[ind] = val
@@ -172,7 +172,7 @@ private extension QREncoder {
             }
         }
 
-        return newBlock
+        return newBlock.prefix(numOfCorrectionBytes)
     }
 
     /// The method merges `qrBlocks` and `correctionBlock` in one array.
@@ -183,7 +183,7 @@ private extension QREncoder {
     ///   - qrBlocks: Blocks of main qr code data.
     ///   - correctionBlocks: Correction blocks for `qrBlocks`.
     /// - Returns: Array merged from `qrBlocks` and `correctionBlocks`
-    func merge_(qrBlocks: LightQRBlocks, correctionBlocks: QRBlocks) -> QRData {
+    func merge_(qrBlocks: LightQRBlocks, correctionBlocks: LightQRBlocks) -> QRData {
         var qrData = QRData()
         qrData.reserveCapacity(2 * qrBlocks.reduce(0) { $0 + $1.count })
 
