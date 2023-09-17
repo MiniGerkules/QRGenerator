@@ -54,6 +54,8 @@ struct LettersAndNumsQREncoder : QREncoder {
     }
 
     func generateQRBits(for data: String) -> String {
+        guard !data.isEmpty else { return "" }
+
         var qrBits = String()
         let chunks = data.uppercased().split(by: 2)!
 
