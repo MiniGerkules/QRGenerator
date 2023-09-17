@@ -25,6 +25,8 @@ struct QRConstants {
 
     //MARK: - Static fields
     static let versions = 1...40
+    static let maxQRVersion = QRVersion(version: versions.upperBound)!
+
     static let correctionLevels = CorrectionLevel.allCases
 
     static let maxDataSize = [
