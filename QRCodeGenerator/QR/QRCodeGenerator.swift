@@ -30,6 +30,19 @@ private extension QRCodeGenerator {
     struct Square {
         let x, y: Int
         let side: Int
+
+        var squarePositions: Positions {
+            var positions = Positions()
+            positions.reserveCapacity(side * side)
+
+            for yBias in 0..<side {
+                for xBias in 0..<side {
+                    positions.append(Position(x: x + xBias, y: y + yBias))
+                }
+            }
+
+            return positions
+        }
     }
 
     struct Position: Hashable {
