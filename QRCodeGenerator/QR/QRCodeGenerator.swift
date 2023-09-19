@@ -302,6 +302,152 @@ private extension QRCodeGenerator {
     }
 }
 
+//MARK: - Methods that count penalty points for generated QR
+private extension QRCodeGenerator {
+    static func countPenaltyPoints_(for qrCode: QRCode) -> Int {
+        return countPenaltyPointsForLines_(for: qrCode) +
+               countPenaltyPointsForSquares_(for: qrCode) +
+               countPenaltyPointsForSpecialPattern_(for: qrCode) +
+               countPenaltyPointsForModulesDiff_(for: qrCode)
+    }
+
+    static func countPenaltyPointsForLines_(for qrCode: QRCode) -> Int {
+        let penaltyUpdater = { (modulesNum: Int, penalty: inout Int) in
+            if modulesNum >= 5 { penalty += modulesNum - 2 }
+        }
+
+        let penaltyCounter = { (x: Int, y: Int, prevModule: inout QRCode.Module,
+                                modulesNum: inout Int, penalty: inout Int) in
+            if qrCode[y, x] == prevModule {
+                modulesNum += 1
+            } else {
+                penaltyUpdater(modulesNum, &penalty)
+
+                prevModule = qrCode[y, x]
+                modulesNum = 1
+            }
+        }
+
+        var xPenalty = 0, yPenalty = 0
+
+        for i in 0..<qrCode.sideLen {
+            var xBlocks = 0, yBlocks = 0
+            var xModule = qrCode[0, i], yModule = qrCode[i, 0]
+
+            for j in 0..<qrCode.sideLen {
+                penaltyCounter(j, i, &xModule, &xBlocks, &xPenalty)
+                penaltyCounter(i, j, &yModule, &yBlocks, &yPenalty)
+            }
+
+            penaltyUpdater(xBlocks, &xPenalty)
+            penaltyUpdater(yBlocks, &yPenalty)
+        }
+
+        return xPenalty + yPenalty
+    }
+
+    static func countPenaltyPointsForSquares_(for qrCode: QRCode) -> Int {
+        var bannedPositions = Set<Position>()
+        var penaltyPoints = 0
+
+        for y in 1..<(qrCode.sideLen - 1) {
+            for x in 1..<(qrCode.sideLen - 1) {
+                guard !bannedPositions.contains(Position(x: x, y: y)) else { continue }
+
+                let squares = [
+                    Square(x: x - 1, y: y - 1, side: 2), Square(x: x, y: y - 1, side: 2),
+                    Square(x: x - 1, y: y, side: 2), Square(x: x, y: y, side: 2)
+                ]
+                for square in squares {
+                    let withData = countModulesNum_(for: qrCode, in: square, module: .withData)
+                    let withoutData = countModulesNum_(for: qrCode, in: square, module: .withoutData)
+
+                    if withData == square.side*square.side || withoutData == square.side*square.side {
+                        for position in square.squarePositions {
+                            bannedPositions.insert(position)
+                        }
+
+                        penaltyPoints += 3
+                        break
+                    }
+                }
+            }
+        }
+
+        return penaltyPoints
+    }
+
+    static func countPenaltyPointsForSpecialPattern_(for qrCode: QRCode) -> Int {
+        var column = [QRCode.Module](repeating: .withoutData, count: qrCode.sideLen)
+        var row = [QRCode.Module](repeating: .withoutData, count: qrCode.sideLen)
+        var penaltyPoints = 0
+
+        for i in 0..<qrCode.sideLen {
+            for j in 0..<qrCode.sideLen {
+                row[j] = qrCode[i, j]
+                column[j] = qrCode[j, i]
+            }
+
+            penaltyPoints += countPenaltyPointsForSpecialPattern_(for: row)
+            penaltyPoints += countPenaltyPointsForSpecialPattern_(for: column)
+        }
+
+        return penaltyPoints
+    }
+
+    static func countPenaltyPointsForSpecialPattern_(for modules: [QRCode.Module]) -> Int {
+        let mainPattern: [QRCode.Module] = [.withData, .withoutData, .withData, .withData,
+                                            .withData, .withoutData, .withData]
+        let patternSide: [QRCode.Module] = [.withoutData, .withoutData, .withoutData, .withoutData]
+
+        let isEqualToPattern = { (range: Range) in
+            return range.lowerBound >= modules.startIndex &&
+                   range.upperBound <= modules.endIndex &&
+                   modules[range] == patternSide[...]
+        }
+
+
+        let ranges = modules.ranges(of: mainPattern)
+        var penaltyPoints = 0
+
+        for range in ranges {
+            let newStart = range.lowerBound - patternSide.count
+            let newEnd = range.upperBound + patternSide.count + 1
+
+            if isEqualToPattern(newStart..<range.lowerBound) ||
+                    isEqualToPattern((range.upperBound + 1)..<newEnd) {
+                penaltyPoints += 40
+            }
+        }
+
+        return penaltyPoints
+    }
+
+    static func countPenaltyPointsForModulesDiff_(for qrCode: QRCode) -> Int {
+        let modWithDataNum = countModulesNum_(for: qrCode,
+                                              in: Square(x: 0, y: 0, side: qrCode.sideLen),
+                                              module: .withData)
+
+        let proportion = Double(modWithDataNum) / Double(qrCode.sideLen * qrCode.sideLen)
+        let penaltyPoints = abs(Int(proportion*100 - 50)) * 2
+
+        return penaltyPoints
+    }
+
+    static func countModulesNum_(for qrCode: QRCode, in square: Square,
+                                 module: QRCode.Module) -> Int {
+        var moduleNum = 0
+
+        for position in square.squarePositions {
+            if qrCode[position.x, position.y] == module {
+                moduleNum += 1
+            }
+        }
+
+        return moduleNum
+    }
+}
+
 //MARK: - Method to convert String to array of modules
 private extension QRCodeGenerator {
     static func toModules_(str: String) -> [QRCode.Module] {
