@@ -105,6 +105,62 @@ private extension QRCodeGenerator {
     }
 }
 
+//MARK: - Methods to make adding patterns work more convenient
+private extension QRCodeGenerator {
+    static func addQRSquareWithBorder_(qrCode: inout QRCode, startX: Int, startY: Int, sideLen: Int) {
+        // Add main square
+        addQRSquare_(qrCode: &qrCode, startX: startX, startY: startY, sideLen: sideLen)
+
+        // Add white border
+        addSquareBorder_(qrCode: &qrCode,
+                         square: Square(x: startX - 1, y: startY - 1, side: sideLen + 2),
+                         module: .withoutData)
+    }
+
+    static func addQRSquare_(qrCode: inout QRCode, startX: Int, startY: Int, sideLen: Int) {
+        // Square in the center
+        addFilledSquare_(qrCode: &qrCode,
+                         square: Square(x: startX + 2, y: startY + 2, side: sideLen - 3),
+                         module: .withData)
+
+        // White inner border
+        addSquareBorder_(qrCode: &qrCode,
+                         square: Square(x: startX + 1, y: startY + 1, side: sideLen - 2),
+                         module: .withoutData)
+
+        // Black outer border
+        addSquareBorder_(qrCode: &qrCode,
+                         square: Square(x: startX, y: startY, side: sideLen),
+                         module: .withData)
+    }
+
+    static func addSquareBorder_(qrCode: inout QRCode, square: Square, module: QRCode.Module) {
+        guard square.side > 2 else {
+            fatalError("Too small square to add!")
+        }
+
+        for i in 0..<square.side {
+            qrCode[square.y, square.x + i] = module // Up border
+            qrCode[square.y + square.side - 1, square.x + i] = module // Down border
+        }
+
+        for i in 1..<(square.side - 1) {
+            qrCode[square.y + i, square.x] = module // Left border
+            qrCode[square.y + i, square.x + square.side - 1] = module // Right border
+        }
+    }
+
+    static func addFilledSquare_(qrCode: inout QRCode, square: Square, module: QRCode.Module) {
+        guard square.side >= 1 else {
+            fatalError("Too small filled square to add!")
+        }
+
+        for position in square.squarePositions {
+            qrCode[position.x, position.y] = module
+        }
+    }
+}
+
 //MARK: - Methods to add correction level, mask and data to QR code
 private extension QRCodeGenerator {
     static func addCorrectionLevelMaskAndData_(qrCode: inout QRCode,
@@ -229,63 +285,8 @@ private extension QRCodeGenerator {
     }
 }
 
-//MARK: - Methods to make adding patterns work more convenient
+//MARK: - Method to convert String to array of modules
 private extension QRCodeGenerator {
-    static func addQRSquareWithBorder_(qrCode: inout QRCode, startX: Int, startY: Int, sideLen: Int) {
-        // Add main square
-        addQRSquare_(qrCode: &qrCode, startX: startX, startY: startY, sideLen: sideLen)
-
-        // Add white border
-        addSquareBorder_(qrCode: &qrCode,
-                         square: Square(x: startX - 1, y: startY - 1, side: sideLen + 2),
-                         module: .withoutData)
-    }
-
-    static func addQRSquare_(qrCode: inout QRCode, startX: Int, startY: Int, sideLen: Int) {
-        // Square in the center
-        addFilledSquare_(qrCode: &qrCode,
-                         square: Square(x: startX + 2, y: startY + 2, side: sideLen - 3),
-                         module: .withData)
-
-        // White inner border
-        addSquareBorder_(qrCode: &qrCode,
-                         square: Square(x: startX + 1, y: startY + 1, side: sideLen - 2),
-                         module: .withoutData)
-
-        // Black outer border
-        addSquareBorder_(qrCode: &qrCode,
-                         square: Square(x: startX, y: startY, side: sideLen),
-                         module: .withData)
-    }
-
-    static func addSquareBorder_(qrCode: inout QRCode, square: Square, module: QRCode.Module) {
-        guard square.side > 2 else {
-            fatalError("Too small square to add!")
-        }
-
-        for i in 0..<square.side {
-            qrCode[square.y, square.x + i] = module // Up border
-            qrCode[square.y + square.side - 1, square.x + i] = module // Down border
-        }
-
-        for i in 1..<(square.side - 1) {
-            qrCode[square.y + i, square.x] = module // Left border
-            qrCode[square.y + i, square.x + square.side - 1] = module // Right border
-        }
-    }
-
-    static func addFilledSquare_(qrCode: inout QRCode, square: Square, module: QRCode.Module) {
-        guard square.side >= 1 else {
-            fatalError("Too small filled square to add!")
-        }
-
-        for y in 0..<square.side {
-            for x in 0..<square.side {
-                qrCode[square.y + y, square.x + x] = module
-            }
-        }
-    }
-
     static func toModules_(str: String) -> [QRCode.Module] {
         var modules = [QRCode.Module]()
         modules.reserveCapacity(str.count)
