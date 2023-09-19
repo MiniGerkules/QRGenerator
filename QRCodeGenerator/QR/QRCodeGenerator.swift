@@ -183,32 +183,24 @@ private extension QRCodeGenerator {
     static func addCorrectionLevelMaskAndData_(qrCode: inout QRCode,
                                                qrData: QRData,
                                                correctionLevel: QRConstants.CorrectionLevel) {
-        let maskID = QRConstants.masks.keys.randomElement()!
-        let maskFunc = QRConstants.masks[maskID]!
-
         // Reserve pixels to not fill them with data
         addCorrectionLevelAndMask_(qrCode: &qrCode,
                                    module: [QRCode.Module](repeating: .withoutData, count: 15))
 
         let positions = generatePositions_(qrCode: qrCode)
+        let bestMaskID = getBestMaskID_(qrCode: qrCode, qrData: qrData,
+                                        correctionLevel: correctionLevel,
+                                        positions: positions)
+        let maskFunc = QRConstants.masks[bestMaskID]!
 
         addQRData_(qrCode: &qrCode, qrData: qrData, positions: positions,
                    maskFunc: maskFunc)
-
         let modules = toModules_(
             str: QRConstants.getCodeOfMaskAndCorLevel(
-                for: correctionLevel, and: maskID
+                for: correctionLevel, and: bestMaskID
             )!
         )
         addCorrectionLevelAndMask_(qrCode: &qrCode, module: modules)
-
-        //TODO: Add choosing the best mask
-        //        for (maskID, maskFunc) in QRConstants.masks {
-        //            addQRData_(qrCode: &qrCode, qrData: qrData, positions: positions,
-        //                       maskFunc: maskFunc)
-        //            addCorrectionLevelAndMask_(qrCode: &qrCode, correctionLevel: correctionLevel,
-        //                                       maskID: maskID)
-        //        }
     }
 
     static func addCorrectionLevelAndMask_(qrCode: inout QRCode, module: [QRCode.Module]) {
@@ -238,6 +230,29 @@ private extension QRCodeGenerator {
         for (ind, module) in module.suffix(8).reversed().enumerated() {
             qrCode[level, qrCode.sideLen - 1 - ind] = module
         }
+    }
+
+    static func getBestMaskID_(qrCode: QRCode, qrData: QRData,
+                               correctionLevel: QRConstants.CorrectionLevel,
+                               positions: Positions) -> Int {
+        var qrCode = qrCode
+        var penaltyPoints = [Int : Int]()
+
+        for (maskID, maskFunc) in QRConstants.masks {
+            addQRData_(qrCode: &qrCode, qrData: qrData, positions: positions,
+                       maskFunc: maskFunc)
+
+            let modules = toModules_(
+                str: QRConstants.getCodeOfMaskAndCorLevel(
+                    for: correctionLevel, and: maskID
+                )!
+            )
+            addCorrectionLevelAndMask_(qrCode: &qrCode, module: modules)
+
+            penaltyPoints[maskID] = countPenaltyPoints_(for: qrCode)
+        }
+
+        return penaltyPoints.min { $0.value < $1.value }!.key
     }
 
     static func addQRData_(qrCode: inout QRCode, qrData: QRData, positions: Positions,
