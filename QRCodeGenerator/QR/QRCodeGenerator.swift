@@ -32,7 +32,11 @@ private extension QRCodeGenerator {
         let side: Int
     }
 
-    typealias Position = (Int, Int)
+    struct Position: Hashable {
+        let x, y: Int
+        var tuple: (Int, Int) { (x, y) }
+    }
+
     typealias Positions = [Position]
 }
 
@@ -231,7 +235,7 @@ private extension QRCodeGenerator {
             let modules = toModules_(str: num.toBinString())
 
             for module in modules {
-                let (x, y) = positions[cur]
+                let (x, y) = positions[cur].tuple
                 qrCode[y, x] = maskFunc(x, y) != 0 ? module : !module
 
                 cur = positions.index(after: cur)
@@ -239,7 +243,7 @@ private extension QRCodeGenerator {
         }
 
         while cur < positions.endIndex {
-            let (x, y) = positions[cur]
+            let (x, y) = positions[cur].tuple
             qrCode[y, x] = .withoutData
 
             cur = positions.index(after: cur)
@@ -270,11 +274,11 @@ private extension QRCodeGenerator {
 
             for y in strideForY() {
                 if qrCode[y, x] == .notSetted {
-                    positions.append((x, y))
+                    positions.append(Position(x: x, y: y))
                 }
 
                 if qrCode[y, x - 1] == .notSetted {
-                    positions.append((x - 1, y))
+                    positions.append(Position(x: x - 1, y: y))
                 }
             }
 
