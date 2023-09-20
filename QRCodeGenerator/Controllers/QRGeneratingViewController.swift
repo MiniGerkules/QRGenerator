@@ -14,6 +14,8 @@ class QRGeneratingViewController: UIViewController {
     private var imageGenerator_: QRImageGenerator!
 
     private let textBox_ = UITextView()
+    private let button_ = UIButton()
+    private let activityView_ = UIActivityIndicatorView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +35,7 @@ class QRGeneratingViewController: UIViewController {
         title = type(of: encoder).dataDesc
     }
 
-    @objc private func generateQR_() {
+    @objc private func generateButtonWasPressed_() {
         guard let data = textBox_.text else { return }
 
         do {
@@ -76,10 +78,8 @@ class QRGeneratingViewController: UIViewController {
 
 //MARK: - Appearance functions
 private extension QRGeneratingViewController {
-    func setupView() {
+    func setupView_() {
         let label = UILabel()
-        let button = UIButton()
-
         label.text = "Enter the data:"
         label.font = UIFont.systemFont(ofSize: 28)
         label.lineBreakMode = .byWordWrapping
@@ -91,20 +91,20 @@ private extension QRGeneratingViewController {
         textBox_.layer.borderWidth = 1
         textBox_.layer.borderColor = UIColor.black.cgColor
 
-        button.setTitle("Сonfirm", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .systemGray6
-        button.layer.cornerRadius = 6
-        button.addTarget(self, action: #selector(generateQR_), for: .touchUpInside)
+        button_.setTitle("Сonfirm", for: .normal)
+        button_.setTitleColor(.black, for: .normal)
+        button_.backgroundColor = .systemGray6
+        button_.layer.cornerRadius = 6
+        button_.addTarget(self, action: #selector(generateButtonWasPressed_), for: .touchUpInside)
 
         view.addSubview(label)
         view.addSubview(textBox_)
-        view.addSubview(button)
+        view.addSubview(button_)
 
-        setupConstraints(label: label, textBox: textBox_, button: button)
+        setupConstraints_(label: label, textBox: textBox_, button: button_)
     }
 
-    func setupConstraints(label: UILabel, textBox: UITextView, button: UIButton) {
+    func setupConstraints_(label: UILabel, textBox: UITextView, button: UIButton) {
         label.translatesAutoresizingMaskIntoConstraints = false
         textBox.translatesAutoresizingMaskIntoConstraints = false
         button.translatesAutoresizingMaskIntoConstraints = false
