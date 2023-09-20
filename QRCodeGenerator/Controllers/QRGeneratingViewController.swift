@@ -25,7 +25,8 @@ class QRGeneratingViewController: UIViewController {
         let sideSize = min(view.frame.width, view.frame.height)
         imageGenerator_ = SimpleQRImageGenerator(screenSideMinSize: sideSize)
 
-        setupView()
+        setupView_()
+        setupActivityView_()
     }
 
     func setup(encoder: QREncoder, correctionLevel: QRConstants.CorrectionLevel) {
@@ -108,6 +109,39 @@ private extension QRGeneratingViewController {
             button.widthAnchor.constraint(equalTo: safe.widthAnchor, multiplier: 0.8),
             button.topAnchor.constraint(equalTo: textBox.bottomAnchor, constant: 20)
         ])
+    }
+
+    func setupActivityView_() {
+        activityView_.style = .large
+        activityView_.color = .black
+        activityView_.hidesWhenStopped = true
+
+        view.addSubview(activityView_)
+        setupActivityViewConstraints_()
+    }
+
+    func setupActivityViewConstraints_() {
+        activityView_.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            activityView_.centerXAnchor.constraint(equalTo: textBox_.centerXAnchor),
+            activityView_.centerYAnchor.constraint(equalTo: textBox_.centerYAnchor)
+        ])
+    }
+}
+
+//MARK: - Methods to show and hide activityView_
+private extension QRGeneratingViewController {
+    func showActivityViewController_() {
+        activityView_.startAnimating()
+        textBox_.isEditable = false
+        button_.isEnabled = false
+    }
+
+    func hideActivityViewController_() {
+        activityView_.stopAnimating()
+        textBox_.isEditable = true
+        button_.isEnabled = true
     }
 }
 
