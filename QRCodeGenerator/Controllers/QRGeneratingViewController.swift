@@ -39,24 +39,32 @@ class QRGeneratingViewController: UIViewController {
     @objc private func generateButtonWasPressed_() {
         guard let data = textBox_.text else { return }
 
-        do {
-            let (qrData, version) = try encoder_.generateQRData(data, with: correctionLevel_)
-            let qrCode = QRCodeGenerator.generateQRCode(
-                qrData: qrData, correctionLevel: correctionLevel_, version: version
-            )
-            let qrImage = imageGenerator_.generateQRImage(qrCode: qrCode)
+        showActivityViewController_()
+        DispatchQueue.global().async { [self] in
+            var errorMsg: String?, qrImage: UIImage!
 
-            qrIsGenerated_(qrCode: qrImage)
-        } catch EncoderError.tooMuchData {
-            generationIsFailed_(
-                message: "The data is too big to be encoded in QR code. Try to " +
+            do {
+                qrImage = try generateQR_(data: data)
+            } catch EncoderError.tooMuchData {
+                errorMsg = "The data is too big to be encoded in QR code. Try to " +
                 "reduce the data size or choose a lower level of error correction."
-            )
-        } catch EncoderError.dataIsEmpty {
-            generationIsFailed_(message: "Enter the data to encode.")
-        } catch EncoderError.uncorrectData(let desc) {
-            generationIsFailed_(message: "The data contains invalid characters: \(desc)")
-        } catch {
+            } catch EncoderError.dataIsEmpty {
+                errorMsg = "Enter the data to encode."
+            } catch EncoderError.uncorrectData(let desc) {
+                errorMsg = "The data contains invalid characters: \(desc)"
+            } catch {
+                fatalError("Errors must be only EncoderError type!")
+            }
+
+            DispatchQueue.main.async { [self] in
+                hideActivityViewController_()
+
+                if let errorMsg {
+                    generatingWasFailed_(message: errorMsg)
+                } else {
+                    generatingWasSucceed_(qrCode: qrImage)
+                }
+            }
         }
     }
 }
