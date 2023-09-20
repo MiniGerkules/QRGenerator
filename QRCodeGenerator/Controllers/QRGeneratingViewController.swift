@@ -58,22 +58,6 @@ class QRGeneratingViewController: UIViewController {
         } catch {
         }
     }
-
-    private func qrIsGenerated_(qrCode: UIImage) {
-        let presenter = QRPresentingViewController()
-        presenter.setup(show: qrCode)
-
-        navigationController?.pushViewController(presenter, animated: true)
-    }
-
-    private func generationIsFailed_(message: String) {
-        let alert = UIAlertController(title: "Generation error", message: message,
-                                      preferredStyle: .alert)
-
-        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
-
-        present(alert, animated: true)
-    }
 }
 
 //MARK: - Appearance functions
@@ -124,5 +108,33 @@ private extension QRGeneratingViewController {
             button.widthAnchor.constraint(equalTo: safe.widthAnchor, multiplier: 0.8),
             button.topAnchor.constraint(equalTo: textBox.bottomAnchor, constant: 20)
         ])
+    }
+}
+
+//MARK: - QR generating methods
+private extension QRGeneratingViewController {
+    func generateQR_(data: String) throws -> UIImage {
+        let (qrData, version) = try encoder_.generateQRData(data, with: correctionLevel_)
+        let qrCode = QRCodeGenerator.generateQRCode(
+            qrData: qrData, correctionLevel: correctionLevel_, version: version
+        )
+
+        return imageGenerator_.generateQRImage(qrCode: qrCode)
+    }
+
+    private func generatingWasSucceed_(qrCode: UIImage) {
+        let presenter = QRPresentingViewController()
+        presenter.setup(show: qrCode)
+
+        navigationController?.pushViewController(presenter, animated: true)
+    }
+
+    private func generatingWasFailed_(message: String) {
+        let alert = UIAlertController(title: "Generation error", message: message,
+                                      preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+
+        present(alert, animated: true)
     }
 }
