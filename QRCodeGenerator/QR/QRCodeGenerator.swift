@@ -137,7 +137,7 @@ private extension QRCodeGenerator {
     static func addQRSquare_(qrCode: inout QRCode, startX: Int, startY: Int, sideLen: Int) {
         // Square in the center
         addFilledSquare_(qrCode: &qrCode,
-                         square: Square(x: startX + 2, y: startY + 2, side: sideLen - 3),
+                         square: Square(x: startX + 2, y: startY + 2, side: sideLen - 4),
                          module: .withData)
 
         // White inner border
