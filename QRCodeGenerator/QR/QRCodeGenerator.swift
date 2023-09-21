@@ -410,11 +410,11 @@ private extension QRCodeGenerator {
 
         for range in ranges {
             let newStart = range.lowerBound - patternSide.count
-            let newEnd = range.upperBound + patternSide.count + 1
+            let newEnd = range.upperBound + patternSide.count
 
             if isEqualToPattern(newStart..<range.lowerBound) ||
-                    isEqualToPattern((range.upperBound + 1)..<newEnd) {
-                penaltyPoints += 40
+                    isEqualToPattern(range.upperBound..<newEnd) {
+                blocks += 1
             }
         }
 
