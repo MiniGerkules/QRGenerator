@@ -327,17 +327,17 @@ private extension QRCodeGenerator {
     }
 
     static func countPenaltyPointsForLines_(for qrCode: QRCode) -> Int {
-        let penaltyUpdater = { (modulesNum: Int, penalty: inout Int) in
-            if modulesNum >= 5 { penalty += modulesNum - 2 }
-        }
-
         let penaltyCounter = { (x: Int, y: Int, prevModule: inout QRCode.Module,
                                 modulesNum: inout Int, penalty: inout Int) in
             if qrCode[y, x] == prevModule {
                 modulesNum += 1
-            } else {
-                penaltyUpdater(modulesNum, &penalty)
 
+                if modulesNum == 5 {
+                    penalty += 3
+                } else if modulesNum > 5 {
+                    penalty += 1
+                }
+            } else {
                 prevModule = qrCode[y, x]
                 modulesNum = 1
             }
@@ -353,43 +353,27 @@ private extension QRCodeGenerator {
                 penaltyCounter(j, i, &xModule, &xBlocks, &xPenalty)
                 penaltyCounter(i, j, &yModule, &yBlocks, &yPenalty)
             }
-
-            penaltyUpdater(xBlocks, &xPenalty)
-            penaltyUpdater(yBlocks, &yPenalty)
         }
 
         return xPenalty + yPenalty
     }
 
     static func countPenaltyPointsForSquares_(for qrCode: QRCode) -> Int {
-        var bannedPositions = Set<Position>()
-        var penaltyPoints = 0
+        var blocks = 0
 
-        for y in 1..<(qrCode.sideLen - 1) {
-            for x in 1..<(qrCode.sideLen - 1) {
-                guard !bannedPositions.contains(Position(x: x, y: y)) else { continue }
+        for y in 0..<(qrCode.sideLen - 1) {
+            for x in 0..<(qrCode.sideLen - 1) {
+                let square = Square(x: x, y: y, side: 2)
+                let withData = countModulesNum_(for: qrCode, in: square, module: .withData)
+                let withoutData = countModulesNum_(for: qrCode, in: square, module: .withoutData)
 
-                let squares = [
-                    Square(x: x - 1, y: y - 1, side: 2), Square(x: x, y: y - 1, side: 2),
-                    Square(x: x - 1, y: y, side: 2), Square(x: x, y: y, side: 2)
-                ]
-                for square in squares {
-                    let withData = countModulesNum_(for: qrCode, in: square, module: .withData)
-                    let withoutData = countModulesNum_(for: qrCode, in: square, module: .withoutData)
-
-                    if withData == square.side*square.side || withoutData == square.side*square.side {
-                        for position in square.squarePositions {
-                            bannedPositions.insert(position)
-                        }
-
-                        penaltyPoints += 3
-                        break
-                    }
+                if withData == square.side*square.side || withoutData == square.side*square.side {
+                    blocks += 1
                 }
             }
         }
 
-        return penaltyPoints
+        return blocks * 3 // 3 -- penalty for a 2x2 block
     }
 
     static func countPenaltyPointsForSpecialPattern_(for qrCode: QRCode) -> Int {
@@ -416,14 +400,13 @@ private extension QRCodeGenerator {
         let patternSide: [QRCode.Module] = [.withoutData, .withoutData, .withoutData, .withoutData]
 
         let isEqualToPattern = { (range: Range) in
-            return range.lowerBound >= modules.startIndex &&
-                   range.upperBound <= modules.endIndex &&
+            return range.lowerBound >= modules.startIndex && range.upperBound <= modules.endIndex &&
                    modules[range] == patternSide[...]
         }
 
 
         let ranges = modules.ranges(of: mainPattern)
-        var penaltyPoints = 0
+        var blocks = 0
 
         for range in ranges {
             let newStart = range.lowerBound - patternSide.count
@@ -435,7 +418,7 @@ private extension QRCodeGenerator {
             }
         }
 
-        return penaltyPoints
+        return blocks * 40 // 40 -- penalty for a pattern
     }
 
     static func countPenaltyPointsForModulesDiff_(for qrCode: QRCode) -> Int {
