@@ -47,11 +47,11 @@ extension QREncoder {
 
         try addServiceFields_(to: &qrBits, sourceDataLen: getDataSize(data),
                              correctionLevel: correctionLevel, version: &version)
-        qrBits.align(to: 8, with: "0") // 8 = num bits in a byte
+        let numOfZeros = qrBits.align(to: 8, with: "0") // 8 = num bits in a byte
 
         var qrBytes = qrBits.split(by: 8)!.map{ UInt8($0, radix: 2)! }
         let sizeInBitsMustBe = QRConstants.getMaxDataSize(for: correctionLevel, version: version)
-        fillDataToSize_(&qrBytes, sizeInBitsMustBe: sizeInBitsMustBe)
+        fillDataToSize_(&qrBytes, sizeInBitsMustBe: sizeInBitsMustBe, numOfZeros: numOfZeros)
 
         let qrBlocks = splitQRBytesToBlocks_(qrBytes, correctionLevel: correctionLevel, version: version)
         let numOfCorrBytes = QRConstants.getNumOfCorrectionBytes(for: correctionLevel, version: version)
@@ -130,9 +130,14 @@ private extension QREncoder {
     /// - Parameters:
     ///   - qrData: The array to fill.
     ///   - sizeInBitsMustBe: The size of resulting array in bits.
-    func fillDataToSize_(_ qrData: inout QRData, sizeInBitsMustBe: Int) {
+    ///   - numOfZeros: The number of added "0" character to string to align.
+    func fillDataToSize_(_ qrData: inout QRData, sizeInBitsMustBe: Int, numOfZeros: Int) {
         let fillers: QRData = [0b11101100, 0b00010001]
+        let toAdd = sizeInBitsMustBe/8 - qrData.count
 
+        if toAdd > 0 && numOfZeros < 4 {
+            qrData.append(0)
+        }
 
         for i in 0..<(sizeInBitsMustBe/8 - qrData.count) {
             qrData.append(fillers[i % 2])
