@@ -9,12 +9,15 @@ extension String {
     /// The method adds `filler` to the end of the string until the string size is aligned to `num`.
     /// - Parameters:
     ///   - num: The number to align the string.
-    ///   - filler: The character to fill the string.
-    mutating func align(to num: Int, with filler: Character) {
-        guard num > 0 else { return }
+    ///   - filler: The character to fill the
+    /// - Returns: The number of added filler values
+    mutating func align(to num: Int, with filler: Character) -> Int {
+        guard num > 0 else { return 0 }
 
         let repeatNum = (num - count % num) % num
         append(contentsOf: String(repeating: filler, count: repeatNum))
+
+        return repeatNum
     }
 
     /// The method splits string into fragments with `numOfElem` elements in each.

@@ -12,10 +12,17 @@ final class StringExensionsTests: XCTestCase {
     func testAlignWithEmptyStr() {
         var testStr = ""
 
-        testStr.align(to: 10, with: "0")
-        testStr.align(to: 5, with: "1")
-        testStr.align(to: 3, with: "2")
-        testStr.align(to: 5, with: "5")
+        var num = testStr.align(to: 10, with: "0")
+        XCTAssertEqual(0, num)
+
+        num = testStr.align(to: 5, with: "1")
+        XCTAssertEqual(0, num)
+
+        num = testStr.align(to: 3, with: "2")
+        XCTAssertEqual(0, num)
+        
+        num = testStr.align(to: 5, with: "5")
+        XCTAssertEqual(0, num)
 
         XCTAssertEqual("", testStr)
     }
@@ -23,11 +30,20 @@ final class StringExensionsTests: XCTestCase {
     func testAlignWithNonEmptyStr() {
         var testStr = "6"
 
-        testStr.align(to: 10, with: "0")
-        testStr.align(to: 5, with: "1")
-        testStr.align(to: 3, with: "2")
-        testStr.align(to: 5, with: "5")
-        testStr.align(to: 0, with: "7")
+        var num = testStr.align(to: 10, with: "0")
+        XCTAssertEqual(9, num)
+
+        num = testStr.align(to: 5, with: "1")
+        XCTAssertEqual(0, num)
+
+        num = testStr.align(to: 3, with: "2")
+        XCTAssertEqual(2, num)
+
+        num = testStr.align(to: 5, with: "5")
+        XCTAssertEqual(3, num)
+
+        num = testStr.align(to: 0, with: "7")
+        XCTAssertEqual(0, num)
 
         XCTAssertEqual("600000000022555", testStr)
     }
