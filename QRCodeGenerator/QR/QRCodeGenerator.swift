@@ -270,9 +270,10 @@ private extension QRCodeGenerator {
             }
         }
 
+        let fillerModule = QRCode.Module.withoutData
         while cur < positions.endIndex {
             let (x, y) = positions[cur].tuple
-            qrCode[y, x] = .withoutData
+            qrCode[y, x] = maskFunc(x, y) != 0 ? fillerModule : !fillerModule
 
             cur = positions.index(after: cur)
         }
